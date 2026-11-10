@@ -92,7 +92,7 @@ format: html
 > **스텐트 시술 후 클로피도그렐을 먹었는데 혈전이 다시 생겼다. 약이 듣지 않는 체질이 있을까?**
 
 -   이론 — 단일유전자 질환 vs 복합질환, GWAS, 유전율과 다유전자 위험점수(PRS), 약물유전체(CYP2C19, HLA-B\*58:01), 집단 차이
--   실습 — GWAS Catalog, PGS Catalog, ClinPGx·CPIC, gnomAD 집단별 빈도 / R로 Manhattan plot
+-   실습 — CPIC·ClinPGx, gnomAD, GWAS Catalog, PGS Catalog / R로 Manhattan plot과 locus 확대
 
 ⚠️ **함정** — GWAS hit ≠ 원인 유전자. 유럽인 데이터로 만든 점수는 한국인에게 그대로 맞지 않음
 

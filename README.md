@@ -39,6 +39,7 @@ quarto preview
 | 주차 | R 패키지 |
 |------|----------|
 | W3 | readr, dplyr, ggplot2 (tidyverse) |
+| W5 | readr, dplyr, ggplot2 (tidyverse) |
 | W7 | readr, dplyr, ggplot2 (tidyverse) |
 | W12 | Seurat (SeuratObject 포함), dplyr, ggplot2 |
 
