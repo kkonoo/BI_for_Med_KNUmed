@@ -95,6 +95,7 @@ description: Writes or revises a chapter of the 의예과 생물정보학 course
 -   제목 위계: `#` = 큰 절(왼쪽 컬러바), `##` = 소절(밑줄), `###` = 굵기만.
 -   이모지: 큰 절 제목 끝에 하나. 실습 단계는 제목 앞에 종류 표시(🌐 웹, 💻 R). 본문에서는 정해진 표지(⚠️ 🔑 🔗 💡 ➡️ ✅ ❌ 🛠️)만 쓴다.
 -   그림: `assets/img/wNN/` 아래에 두고 `/assets/img/wNN/파일.png`로 넣는다. 캡션은 그림이 말하는 것을 한 문장으로. 직접 그리는 도식과 그래프는 다시 만들 수 있게 `figs/` 스크립트로 남긴다(처음 만들 때 `kkonoo/BI_for_Biomed_KNUmed`의 `figs/style.py`를 가져와 색과 글꼴을 맞춘다).
+-   글자로 줄을 맞춘 그림(read 정렬, 파일 예시 등)은 코드 블록 안에 영문·숫자만 쓴다. 한글은 폭이 달라 열이 어긋나므로 설명은 블록 밖 bullet로 뺀다.
 -   시뮬레이터(edu_sims)는 iframe으로 넣는다. 높이와 테마는 `assets/edu-sims-resize.html`이 맞춘다.
 -   교차 링크: `🔗 [W2 §4](w02_rare_disease.qmd#w2-s4)`.
 
