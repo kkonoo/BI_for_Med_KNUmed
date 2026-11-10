@@ -105,7 +105,7 @@ format: html
 > **비흡연 50대 폐선암 환자. NGS 리포트에 "EGFR exon 19 deletion"이 적혀 있다. 이 한 줄이 치료를 어떻게 바꿀까?**
 
 -   이론 — 생식세포 vs 체세포 변이, driver vs passenger, 표적치료와 동반진단, TMB·MSI, 액체생검, 메틸화 진단, 유전성 암
--   실습 — OncoKB, cBioPortal(TCGA) / R로 oncoplot
+-   실습 — OncoKB, cBioPortal / R로 TCGA 폐선암 변이 빈도, oncoplot, 흡연력과 *EGFR*
 
 ⚠️ **함정** — 종양에서 찾은 변이가 모두 체세포 변이는 아님. ctDNA 음성 ≠ 암 없음
 
@@ -131,7 +131,7 @@ format: html
 > **같은 면역항암제를 맞았는데 한 환자는 종양이 줄고 다른 환자는 그대로다. 종양 속 T세포는 무엇이 달랐을까?**
 
 -   이론 — bulk가 숨기는 것, 단일세포 실험(barcode·UMI), QC·클러스터링·UMAP, 세포 주석, pseudobulk, 공간 전사체, 종양미세환경
--   실습 — CZ CELLxGENE Discover / R로 Seurat pbmc3k 분석과 세포 주석
+-   실습 — CZ CELLxGENE Discover / R로 Seurat pbmc3k 분석과 세포 주석, CD8 T세포의 *TCF7* 보기
 
 ⚠️ **함정** — 표본 수 n은 세포 수가 아니라 환자 수. UMAP의 거리와 모양에 의미를 두지 말 것
 

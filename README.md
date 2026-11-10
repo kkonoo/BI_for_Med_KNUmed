@@ -39,6 +39,8 @@ quarto preview
 | 주차 | R 패키지 |
 |------|----------|
 | W3 | readr, dplyr, ggplot2 (tidyverse) |
+| W7 | readr, dplyr, ggplot2 (tidyverse) |
+| W12 | Seurat (SeuratObject 포함), dplyr, ggplot2 |
 
 실습 데이터는 `data/`에 있고 사이트에도 함께 올라갑니다(`_quarto.yml`의 `resources`). 학생은 장의 링크로 내려받아 JupyterHub 파일 창에 올립니다.
 
