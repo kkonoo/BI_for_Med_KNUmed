@@ -1,0 +1,143 @@
+project:
+  type: website
+  execute-dir: project
+  output-dir: _site
+
+  # 렌더 대상을 명시 — 이 목록에 없는 .qmd 는 빌드하지 않음
+  render:
+    - index.qmd
+    - chapters/w01_intro.qmd
+    - chapters/w02_rare_disease.qmd
+    - chapters/w03_rare_disease_lab.qmd
+    - chapters/w04_complex_pgx.qmd
+    - chapters/w05_complex_pgx_lab.qmd
+    - chapters/w06_cancer.qmd
+    - chapters/w07_cancer_lab.qmd
+    - chapters/w09_transcriptome.qmd
+    - chapters/w10_transcriptome_lab.qmd
+    - chapters/w11_singlecell.qmd
+    - chapters/w12_singlecell_lab.qmd
+    - chapters/w13_microbiome.qmd
+    - chapters/w14_microbiome_lab.qmd
+
+lang: ko
+
+website:
+  favicon: assets/img/favicon.ico
+  page-navigation: true          # 챕터 하단에 이전/다음 주차 링크
+
+  navbar:
+    logo: assets/img/logo.jpg
+    left:
+      - href: index.qmd
+        text: 홈
+      - text: "주차별 강의"       # ← 드롭다운. 상단은 깔끔하게, 접근은 어디서나
+        menu:
+          - text: "Part 1 · 유전체 의학"
+          - href: chapters/w01_intro.qmd
+            text: "W1 · 생물정보학과 정밀의료"
+          - href: chapters/w02_rare_disease.qmd
+            text: "W2 · 유전 변이와 희귀질환 진단"
+          - href: chapters/w03_rare_disease_lab.qmd
+            text: "W3 · 실습: 희귀질환 변이 해석"
+          - href: chapters/w04_complex_pgx.qmd
+            text: "W4 · 복합질환과 약물유전체"
+          - href: chapters/w05_complex_pgx_lab.qmd
+            text: "W5 · 실습: 유전 위험과 약물 반응"
+          - href: chapters/w06_cancer.qmd
+            text: "W6 · 암 유전체"
+          - href: chapters/w07_cancer_lab.qmd
+            text: "W7 · 실습: 암 NGS 리포트 읽기"
+          - text: "---"
+          - text: "Part 2 · 발현에서 미생물까지"
+          - href: chapters/w09_transcriptome.qmd
+            text: "W9 · 전사체"
+          - href: chapters/w10_transcriptome_lab.qmd
+            text: "W10 · 실습: RNA-seq 차등 발현"
+          - href: chapters/w11_singlecell.qmd
+            text: "W11 · 단일세포·공간 전사체"
+          - href: chapters/w12_singlecell_lab.qmd
+            text: "W12 · 실습: 세포 아틀라스와 세포 주석"
+          - href: chapters/w13_microbiome.qmd
+            text: "W13 · 마이크로바이옴과 감염 유전체"
+          - href: chapters/w14_microbiome_lab.qmd
+            text: "W14 · 실습: 병원체 추적과 미생물 다양성"
+
+  sidebar:
+    style: "floating"
+    search: true
+    contents:
+      - text: "홈"
+        href: index.qmd
+      - section: "Part 1 · 유전체 의학"
+        contents:
+          - text: "W1. 생물정보학과 정밀의료"
+            href: chapters/w01_intro.qmd
+          - text: "W2. 유전 변이와 희귀질환 진단"
+            href: chapters/w02_rare_disease.qmd
+          - text: "W3. 실습: 희귀질환 변이 해석"
+            href: chapters/w03_rare_disease_lab.qmd
+          - text: "W4. 복합질환과 약물유전체"
+            href: chapters/w04_complex_pgx.qmd
+          - text: "W5. 실습: 유전 위험과 약물 반응"
+            href: chapters/w05_complex_pgx_lab.qmd
+          - text: "W6. 암 유전체"
+            href: chapters/w06_cancer.qmd
+          - text: "W7. 실습: 암 NGS 리포트 읽기"
+            href: chapters/w07_cancer_lab.qmd
+      - section: "Part 2 · 발현에서 미생물까지"
+        contents:
+          - text: "W9. 전사체"
+            href: chapters/w09_transcriptome.qmd
+          - text: "W10. 실습: RNA-seq 차등 발현"
+            href: chapters/w10_transcriptome_lab.qmd
+          - text: "W11. 단일세포·공간 전사체"
+            href: chapters/w11_singlecell.qmd
+          - text: "W12. 실습: 세포 아틀라스와 세포 주석"
+            href: chapters/w12_singlecell_lab.qmd
+          - text: "W13. 마이크로바이옴과 감염 유전체"
+            href: chapters/w13_microbiome.qmd
+          - text: "W14. 실습: 병원체 추적과 미생물 다양성"
+            href: chapters/w14_microbiome_lab.qmd
+
+  page-footer:
+    left: "Copyright 2026, Eunji"
+
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    respect-user-color-scheme: true
+    css: assets/html.css
+    toc: true
+    toc-depth: 4
+    toc-title: "목차"
+    toc-float: true
+    page-layout: full
+
+    code-fold: false
+    code-copy: true
+    highlight-style: github
+
+    number-sections: false
+    smooth-scroll: true
+
+    grid:
+      sidebar-width: 300px
+      body-width: 1000px
+      margin-width: 280px # toc
+
+    # 사이트 전역 위젯 (한국어 전용 사이트라 language-switch.html은 넣지 않음)
+    include-after-body:
+      - assets/ai-chat-init.html
+      - assets/edu-sims-resize.html
+      - assets/key-terms.html
+
+execute:
+  freeze: auto          # 코드 실행 결과 캐시 (빠른 빌드)
+  echo: true
+  eval: false
+  warning: false
+  message: false
