@@ -6,3 +6,6 @@
 .Rhistory
 .DS_Store
 Thumbs.db
+
+# 작업용 git worktree (커밋하지 않음)
+.claude/worktrees/
