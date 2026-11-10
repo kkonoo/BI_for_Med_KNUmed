@@ -118,7 +118,7 @@ format: html
 > **병기가 같은 호르몬 수용체 양성 유방암 환자 두 명. 한 명만 항암화학요법을 받는다. 무엇이 둘을 갈랐을까?**
 
 -   이론 — RNA-seq이 측정하는 것, 실험 설계와 배치 효과, 정규화, 차등 발현, 경로 분석, 발현 기반 검사(Oncotype DX, PAM50), RNA와 단백질
--   실습 — GEO에서 데이터 찾기 / R로 DESeq2 → volcano plot → 경로 분석
+-   실습 — GEO(GSE96058), Enrichr / R로 TCGA 유방암 Luminal A vs Basal-like DESeq2 → volcano plot → 재발 점수 유전자
 
 ⚠️ **함정** — 배치와 비교 조건이 겹치면 어떤 분석으로도 못 구함. Bulk 발현 차이는 세포 조성 차이일 수 있음
 

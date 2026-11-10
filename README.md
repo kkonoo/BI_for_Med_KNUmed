@@ -41,6 +41,7 @@ quarto preview
 | W3 | readr, dplyr, ggplot2 (tidyverse) |
 | W5 | readr, dplyr, ggplot2 (tidyverse) |
 | W7 | readr, dplyr, ggplot2 (tidyverse) |
+| W10 | DESeq2 (Bioconductor), readr, dplyr, ggplot2, ggrepel, tibble |
 | W12 | Seurat (SeuratObject 포함), dplyr, ggplot2 |
 | W14 | readr, dplyr, tidyr, ggplot2, vegan, phyloseq (고쳐 보기만) |
 
@@ -52,5 +53,16 @@ quarto preview
 
 ## 현재 상태
 
-- 완료: 사이트 틀, 홈 강의계획, W1 이론, W3 실습(가상 환자 변이표 `data/w03_variants.tsv`, 생성 스크립트 `scripts/make_w03_variants.R`)
-- 준비 중: W2, W4–W14 본문. 개요만 있는 장은 맨 위에 `🚧 준비 중` 상자가 있습니다.
+- 완료: 사이트 틀, 홈 강의계획, W1–W14 전 장(이론 7, 실습 6)
+- 실습 데이터와 만든 방법
+
+| 주차 | 데이터 | 실제/가상 | 생성 스크립트 |
+|------|--------|-----------|---------------|
+| W3 | `w03_variants.tsv` — 가상 환자 엑솜 변이표 | 가상 (실제 변이 삽입) | `scripts/make_w03_variants.R` |
+| W5 | `w05_cad_gwas.tsv` — 관상동맥질환 GWAS 요약 통계 | 가상 (실제 위험 위치 좌표) | `scripts/make_w05_cad_gwas.R` |
+| W7 | `w07_luad_mutations.tsv`, `w07_luad_samples.tsv` — TCGA 폐선암 | 실제 (UCSC Xena) | `scripts/make_w07_luad.R` |
+| W10 | `w10_brca_counts.tsv`, `w10_brca_samples.tsv` — TCGA 유방암 | 실제 (UCSC Xena) | `scripts/make_w10_brca.R` |
+| W12 | `w12_pbmc3k.tar.gz` — 10x pbmc3k | 실제 (10x Genomics 공개) | `scripts/fetch_w12_pbmc3k.py` |
+| W14 | `w14_cdiff_snp.tsv`, `w14_gut_genera.tsv` — 병동 분리주, 장내 세균 | 가상 | `scripts/make_w14_data.R` |
+
+- 남은 일: 웹 도구(OncoKB, cBioPortal, CPIC, GWAS/PGS Catalog, GEO, Enrichr, CELLxGENE, Nextstrain, CARD) 화면은 만들 때 열어 보지 못해 메뉴 이름을 일반적으로 적었습니다. 수업 전에 한 번 확인이 필요합니다.
