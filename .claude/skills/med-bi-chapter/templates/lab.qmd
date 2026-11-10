@@ -30,14 +30,8 @@ date: last-modified
 # 0. 준비물 🧰 {#wN-s0}
 
 -   웹: [도구 이름](https://…), [도구 이름](https://…) — 계정 필요 여부
--   데이터: `data/wNN_파일이름` — 출처(accession 또는 URL), 무엇이 들어 있는지 한 줄
--   R 패키지 (처음 한 번만 설치)
-
-```r
-install.packages(c("tidyverse"))
-# Bioconductor 패키지가 필요하면
-# BiocManager::install(c("패키지"))
-```
+-   데이터: [wNN_파일이름.tsv](../data/wNN_파일이름.tsv) — 출처(accession 또는 URL), 무엇이 들어 있는지 한 줄
+-   JupyterHub: 로그인 → 새 R 노트북 → 왼쪽 파일 창에 데이터 파일을 끌어다 놓기(업로드)
 
 ------------------------------------------------------------------------
 
@@ -64,7 +58,7 @@ install.packages(c("tidyverse"))
 ```r
 library(tidyverse)
 
-data <- read_tsv("data/wNN_파일이름.tsv")
+data <- read_tsv("wNN_파일이름.tsv")
 head(data)
 ```
 

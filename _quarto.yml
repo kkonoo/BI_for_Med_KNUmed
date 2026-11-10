@@ -20,6 +20,10 @@ project:
     - chapters/w13_microbiome.qmd
     - chapters/w14_microbiome_lab.qmd
 
+  # 실습 데이터를 사이트에 함께 올려 학생이 내려받을 수 있게 함
+  resources:
+    - data/
+
 lang: ko
 
 website:
