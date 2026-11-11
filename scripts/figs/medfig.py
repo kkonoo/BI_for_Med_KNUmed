@@ -1,10 +1,15 @@
 """Shared look for the course's concept figures (scripts/figs/*.py → assets/img/wNN/*.png).
 
-Slide-gallery crimson in its gradient + rich mode (kkonoo.github.io/slide-gallery):
-wine → crimson → burnt-orange gradient for the main element, tints of those colours for
-the rest, and the gallery's blue accent for the one thing the reader should look at.
-Korean labels in Pretendard (install the OTFs in ~/.fonts). No titles — the caption in
-the chapter says what the figure shows.
+Slide-gallery crimson, gradient mode (kkonoo.github.io/slide-gallery) = more hues from the
+crimson → orange range, each used as a SOLID colour:
+- Fills are flat. No gradient inside a box.
+- Parallel items (a list of types, steps of a flow, groups) get different colours from
+  CAT / ramp(n) — never the accent.
+- BLUE (accent) marks at most one thing per figure, and only when the figure has a single
+  point the reader must not miss (the answer, the warning, the odd one out). Many figures
+  use no accent at all.
+- Korean labels in Pretendard (install the OTFs in ~/.fonts). No titles — the caption in
+  the chapter says what the figure shows.
 
 Coordinates are inches: new(w, h) gives an axis that runs 0..w and 0..h, so a box drawn
 1.0 wide is one inch wide on the page at 100% and text sizes stay predictable.
@@ -17,6 +22,9 @@ import matplotlib.patches as mp
 from matplotlib import font_manager as fm
 from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
+import logging
+from matplotlib.transforms import Bbox
+logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
 for f in glob.glob(os.path.expanduser("~/.fonts/Pretendard-*.otf")):
     fm.fontManager.addfont(f)
@@ -30,8 +38,9 @@ plt.rcParams.update({
 })
 
 # ── colours ────────────────────────────────────────────────────────────────
-WINE, CRIMSON, ORANGE = "#7A1F3D", "#B0283C", "#C2531F"   # gradient stops
-BLUE = "#2E9CCA"                                          # accent: one look-here per figure
+WINE, CRIMSON, ORANGE, AMBER = "#7A1F3D", "#B0283C", "#C2531F", "#D9822B"
+CAT = [CRIMSON, ORANGE, WINE, AMBER]          # parallel items, in this order
+BLUE = "#2E9CCA"                              # accent: at most one look-here per figure
 TEXT, TEXT2, LINE, FAINT = "#262B33", "#6B7280", "#E2E5EA", "#F5F6F8"
 
 def mix(c, a):
@@ -39,10 +48,10 @@ def mix(c, a):
     c = np.array([int(c[i:i + 2], 16) for i in (1, 3, 5)])
     return "#%02X%02X%02X" % tuple((255 + (c - 255) * a).round().astype(int))
 
-GRAD = LinearSegmentedColormap.from_list("medgrad", [WINE, CRIMSON, ORANGE])
+GRAD = LinearSegmentedColormap.from_list("medgrad", [WINE, CRIMSON, ORANGE, AMBER])
 
 def ramp(n):
-    """n colours along the wine → crimson → orange gradient (for steps 1..n)."""
+    """n solid colours along wine → crimson → orange → amber (for ordered steps 1..n)."""
     return [matplotlib.colors.to_hex(GRAD(i / max(n - 1, 1))) for i in range(n)]
 
 # ── canvas ─────────────────────────────────────────────────────────────────
@@ -53,8 +62,16 @@ def new(w, h):
     return fig, ax
 
 def save(fig, path):
+    """PNG at 200 dpi. A drawing-only figure (all axes off) is cropped to what is drawn."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    fig.savefig(path, dpi=200, bbox_inches="tight", pad_inches=0.12)
+    bbox = "tight"
+    if not any(a.axison for a in fig.axes):
+        r = fig.canvas.get_renderer()
+        arts = [x for a in fig.axes for x in a.texts + a.patches + a.images + a.lines + a.collections
+                if x.get_visible()]
+        bb = Bbox.union([x.get_window_extent(r) for x in arts])
+        bbox = bb.transformed(fig.dpi_scale_trans.inverted()).padded(0.12)
+    fig.savefig(path, dpi=200, bbox_inches=bbox, pad_inches=0.12)
     plt.close(fig)
     print("saved", path)
 
@@ -64,17 +81,6 @@ def box(ax, x, y, w, h, fc="white", ec=LINE, lw=1.0, r=0.08, z=2, ls="-"):
     p = mp.FancyBboxPatch((x, y), w, h, boxstyle=f"round,pad=0,rounding_size={r}",
                           fc=fc, ec=ec, lw=lw, zorder=z, ls=ls)
     ax.add_patch(p)
-    return p
-
-def gradbox(ax, x, y, w, h, colors=(WINE, CRIMSON, ORANGE), r=0.08, z=2, vertical=False):
-    """Rounded box filled with a left→right (or bottom→top) gradient."""
-    p = box(ax, x, y, w, h, fc="none", ec="none", r=r, z=z)
-    cmap = LinearSegmentedColormap.from_list("g", list(colors))
-    g = np.linspace(0, 1, 256)
-    g = g[:, None] if vertical else g[None, :]
-    im = ax.imshow(g, cmap=cmap, extent=(x, x + w, y, y + h), origin="lower",
-                   aspect="auto", zorder=z, interpolation="bicubic")
-    im.set_clip_path(p)
     return p
 
 def chevron(ax, x, y, w, h, fc, tip=0.18, first=False, z=2):
