@@ -354,7 +354,7 @@ count가 많다고 그 유전자가 더 많이 발현된 것은 아니다. 생�
 | FFPE | 포르말린으로 고정하고 파라핀에 묻어 보관한 병리 조직 |
 | Count matrix | 유전자 × 시료 표. 칸마다 그 유전자로 온 read 수 |
 | Normalization (정규화) | 깊이, 길이, 조성 차이를 보정해 시료끼리 비교할 수 있게 만드는 일 |
-| log2 fold change | 두 군 발현 비의 log₂ 값. +1 = 2배, −1 = 절반 |
+| log₂ fold change (log₂FC) | 두 군 발현 비의 log₂ 값. +1 = 2배, −1 = 절반 |
 | False discovery rate (FDR) | 유의하다고 고른 것 가운데 거짓 발견의 비율. 다중검정 보정에 씀 |
 | Volcano plot | x = 효과 크기, y = 확실성으로 유전자를 찍은 그림 |
 | Over-representation analysis (ORA) | 유의한 유전자 목록이 어떤 경로와 우연보다 많이 겹치는지 보는 방법 |

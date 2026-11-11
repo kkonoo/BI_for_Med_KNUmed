@@ -1,5 +1,6 @@
-<!-- Key-term hover: reads the chapter's "🔑 Key terms / 핵심 용어" tables (including the
-     advanced-terms callout) and marks the first place each term appears in the body.
+<!-- Key-term hover: reads the chapter's "🔑 핵심 용어" table and marks every place each term
+     appears in the body. A page without its own table (the lab weeks) borrows the table of the
+     previous page in the page navigation, which is its theory week.
      Hover (or tap on mobile) shows the one-line meaning with Quarto's own tippy. -->
 <script>
 (function () {
@@ -24,23 +25,29 @@
 
   function termPattern(alias) {
     var escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // The first letter may be either case ("Bulk RNA-seq" also finds "bulk RNA-seq").
+    escaped = escaped.replace(/^[A-Za-z]/, function (c) {
+      return '[' + c.toLowerCase() + c.toUpperCase() + ']';
+    });
     var plural = /[A-Za-z]$/.test(alias) ? 's?' : '';
     // Acronyms and short symbols match case-sensitively (PCA, kNN, H² vs h²).
     var strict = alias.length <= 2 || /[A-Z]/.test(alias.slice(1));
-    // Word edges are ASCII only, so Korean particles still match (VCF는, read가).
-    return new RegExp('(^|[^A-Za-z0-9-])(' + escaped + plural + ')(?![A-Za-z0-9-])', strict ? '' : 'i');
+    // Word edges are ASCII only, so Korean particles still match after a term (VCF는, 변이가).
+    // A Korean term must not start inside a longer Korean word (변이 in 돌연변이).
+    var before = /^[가-힣]/.test(alias) ? '[^A-Za-z0-9가-힣-]' : '[^A-Za-z0-9-]';
+    return new RegExp('(^|' + before + ')(' + escaped + plural + ')(?![A-Za-z0-9-])', strict ? '' : 'i');
   }
 
-  function initKeyTerms() {
-    var main = document.getElementById('quarto-document-content');
-    if (!main) return;
-    var heading = Array.prototype.find.call(main.querySelectorAll('h1'), function (h) {
+  function findGlossary(root) {
+    var heading = Array.prototype.find.call(root.querySelectorAll('h1'), function (h) {
       return h.textContent.trim().indexOf('🔑') === 0;
     });
-    var glossary = heading && heading.closest('section');
-    if (!glossary) return;
+    return heading && heading.closest('section');
+  }
 
-    // One entry per alias; the first row that names it wins.
+  // One entry per alias; the first row that names it wins. Longer terms first,
+  // so "체세포 변이" is claimed before "변이".
+  function readEntries(glossary) {
     var entries = [], seen = {};
     glossary.querySelectorAll('tbody tr').forEach(function (tr) {
       var cells = tr.querySelectorAll('td');
@@ -55,14 +62,14 @@
         entries.push({ re: re, len: alias.length, content: content, title: title });
       });
     });
-    // Longer terms first, so "heterotypic doublet" is claimed before "doublet".
-    entries.sort(function (a, b) { return b.len - a.len; });
+    return entries.sort(function (a, b) { return b.len - a.len; });
+  }
+
+  // Marks every match in the body text before `stop` (the page's own key-terms section).
+  function markTerms(main, entries, stop) {
     // Touch screens have no hover: a tap opens the meaning, a tap elsewhere closes it.
     var trigger = window.matchMedia('(hover: none)').matches ? 'click' : 'mouseenter focus';
-
-    // Body text before the key-terms section. Text in collapsed callouts (learning objectives,
-    // "Going further") goes last, so a term is marked where readers see it first.
-    var shown = [], folded = [];
+    var nodes = [];
     var walker = document.createTreeWalker(main, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
       acceptNode: function (n) {
         if (n.nodeType === Node.TEXT_NODE) return NodeFilter.FILTER_ACCEPT;
@@ -70,10 +77,9 @@
       }
     });
     for (var n = walker.nextNode(); n; n = walker.nextNode()) {
-      if (glossary.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_FOLLOWING) break;
-      (n.parentElement.closest('.callout-collapse:not(.show)') ? folded : shown).push(n);
+      if (stop && (stop.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_FOLLOWING)) break;
+      nodes.push(n);
     }
-    var nodes = shown.concat(folded);
 
     entries.forEach(function (entry) {
       for (var i = 0; i < nodes.length; i++) {
@@ -86,7 +92,7 @@
         span.tabIndex = 0;
         word.parentNode.replaceChild(span, word);
         span.appendChild(word);
-        nodes.splice(i + 1, 0, rest);
+        nodes.splice(i + 1, 0, rest);  // the rest of this text is searched next
         if (window.tippy) {
           window.tippy(span, {
             content: entry.content, allowHTML: true, trigger: trigger, maxWidth: 360, delay: 100,
@@ -95,9 +101,26 @@
         } else {
           span.title = entry.title;
         }
-        return;
       }
     });
+  }
+
+  function initKeyTerms() {
+    var main = document.getElementById('quarto-document-content');
+    if (!main) return;
+    var glossary = findGlossary(main);
+    if (glossary) return markTerms(main, readEntries(glossary), glossary);
+
+    // A lab week has no table of its own: use the theory week before it.
+    var prev = document.querySelector('.nav-page-previous a[href]');
+    if (!prev || !window.fetch) return;
+    fetch(prev.href)
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (html) {
+        var other = findGlossary(new DOMParser().parseFromString(html, 'text/html'));
+        if (other) markTerms(main, readEntries(other), null);
+      })
+      .catch(function () {});
   }
 
   if (document.readyState === 'loading') {

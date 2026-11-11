@@ -30,7 +30,7 @@ quarto preview
 
 - 의과학과 수업 사이트들과 같은 공용 테마(`assets/html.css`, 생물정보학 crimson)를 씁니다. 자세한 규칙은 [COURSE_SITE_PLAYBOOK.md](COURSE_SITE_PLAYBOOK.md)에 있습니다.
 - 한국어 전용 사이트라 EN/KO 언어 타일은 없고, 라이트/다크 테마 타일만 있습니다.
-- 각 장 끝의 `🔑 핵심 용어` 표는 본문에서 해당 용어에 마우스를 올리면 뜻이 뜨는 데 쓰입니다(`assets/key-terms.html`).
+- 이론 장 끝의 `🔑 핵심 용어` 표는 본문에서 해당 용어가 나올 때마다 마우스를 올리면 뜻이 뜨는 데 쓰입니다(`assets/key-terms.html`). 실습 장은 바로 앞 이론 장의 표를 씁니다.
 
 ## 실습 서버(JupyterHub) 준비
 
