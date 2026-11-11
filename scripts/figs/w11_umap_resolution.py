@@ -22,19 +22,19 @@ for g, (c, s, n, split, axis) in enumerate(groups):
     k += split
 pts = np.vstack(pts); low = np.array(low); high = np.array(high)
 
-fig, axes = plt.subplots(1, 2, figsize=(10.4, 4.6), gridspec_kw={"wspace": 0.08})
+fig, axes = plt.subplots(1, 2, figsize=(8.2, 4.4), gridspec_kw={"wspace": 0.06})
 for a, lab, cols, tag in [(axes[0], low, CAT, "① 해상도 낮게 → 클러스터 4개"),
                           (axes[1], high, shades, "② 해상도 높게 → 클러스터 7개")]:
-    a.scatter(pts[:, 0], pts[:, 1], s=6, c=[cols[i] for i in lab], lw=0)
+    a.scatter(pts[:, 0], pts[:, 1], s=5, c=[cols[i] for i in lab], lw=0)
     for i in np.unique(lab):
         cx, cy = pts[lab == i].mean(axis=0)
-        a.text(cx, cy, str(i + 1), ha="center", va="center", fontsize=10, fontweight="bold", color=TEXT,
-               bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="none"))
+        a.text(cx, cy, str(i + 1), ha="center", va="center", fontsize=11.5, fontweight="bold", color=TEXT,
+               bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="none"))
     a.set_xticks([]); a.set_yticks([])
     for sp in a.spines.values():
         sp.set_visible(False)
     a.set_xlim(-3.6, 4.4); a.set_ylim(-2.9, 6.0)
-    a.text(-3.5, 5.95, tag, fontsize=11.5, fontweight="bold", color=TEXT, va="top")
-fig.text(0.5, 0.02, "어느 쪽이 맞는지 알려 주는 통계는 없음 → marker 유전자와 생물학으로 판단",
-         ha="center", fontsize=11, fontweight="bold", color=BLUE)
+    a.text(-3.5, 5.95, tag, fontsize=12.5, fontweight="bold", color=TEXT, va="top")
+fig.text(0.5, 0.0, "어느 쪽이 맞는지 알려 주는 통계는 없음\n→ marker 유전자와 생물학으로 판단",
+         ha="center", va="top", fontsize=12, fontweight="bold", color=BLUE, linespacing=1.4)
 save(fig, "../../assets/img/w11/umap_resolution.png")
