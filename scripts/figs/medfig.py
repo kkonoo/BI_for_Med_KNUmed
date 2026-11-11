@@ -10,6 +10,8 @@ crimson → orange range, each used as a SOLID colour:
   use no accent at all.
 - Korean labels in Pretendard (install the OTFs in ~/.fonts). No titles — the caption in
   the chapter says what the figure shows.
+- Size: the page shows figures ~600 px wide on a laptop, so keep figures ≤ 8.5 in wide and
+  text ≥ 11 pt (headings and key labels 12–13 pt). Stack panels vertically when they do not fit.
 
 Coordinates are inches: new(w, h) gives an axis that runs 0..w and 0..h, so a box drawn
 1.0 wide is one inch wide on the page at 100% and text sizes stay predictable.
@@ -66,10 +68,12 @@ def save(fig, path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     bbox = "tight"
     if not any(a.axison for a in fig.axes):
+        fig.canvas.draw()                       # scatter extents exist only after a draw
         r = fig.canvas.get_renderer()
         arts = [x for a in fig.axes for x in a.texts + a.patches + a.images + a.lines + a.collections
                 if x.get_visible()]
-        bb = Bbox.union([x.get_window_extent(r) for x in arts])
+        bbs = [x.get_window_extent(r) for x in arts]
+        bb = Bbox.union([b for b in bbs if np.isfinite(b.bounds).all() and b.width > 0 and b.height > 0])
         bbox = bb.transformed(fig.dpi_scale_trans.inverted()).padded(0.12)
     fig.savefig(path, dpi=200, bbox_inches=bbox, pad_inches=0.12)
     plt.close(fig)

@@ -120,6 +120,7 @@ format:
     toc-title: "목차"
     toc-float: true
     page-layout: full
+    lightbox: auto
 
     code-fold: false
     code-copy: true
