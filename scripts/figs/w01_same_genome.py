@@ -1,10 +1,12 @@
 # W1 §2.3 같은 유전체, 다른 세포: DNA는 같고, 어떤 유전자를 켜느냐(RNA)가 다름 — 예시 그림
 from medfig import *
 
-fig, ax = new(9.8, 4.1)
-genes = [("공통 유전자", "#9AA1AB"), ("신경 유전자", CAT[0]), ("간 유전자\n(예: 알부민)", CAT[1])]
-cells = [("신경세포", 0.35, [0.55, 0.95, 0.0]), ("간세포", 5.5, [0.55, 0.0, 0.95])]
-CW = 4.2                                     # column width
+fig, ax = new(8.4, 4.75)
+genes = [("공통 유전자", "#9AA1AB"), ("신경 유전자", CAT[0]), ("간 유전자", CAT[1])]
+cells = [("신경세포", 0.0, [0.55, 0.95, 0.0]), ("간세포", 4.55, [0.55, 0.0, 0.95])]
+CW = 3.85                                    # column width
+GX = [0.62, 1.72, 2.82]                      # gene x offsets inside a column
+GW = 0.86                                    # gene box width
 
 def neuron(cx, cy, c):
     for ang in (100, 140, 200, 240, 60):
@@ -21,31 +23,35 @@ def hepatocyte(cx, cy, c):
 
 for (name, x0, expr), draw in zip(cells, (neuron, hepatocyte)):
     c = CAT[0] if name == "신경세포" else CAT[1]
-    draw(x0 + 0.45, 3.65, c)
-    label(ax, x0 + 1.3 if name == "신경세포" else x0 + 0.95, 3.65, name, fs=13.5, w="bold", c=c, ha="left")
+    draw(x0 + 0.45, 4.3, c)
+    label(ax, x0 + (1.3 if name == "신경세포" else 0.95), 4.3, name, fs=14, w="bold", c=c, ha="left")
     # DNA: the same three genes in both cells
-    label(ax, x0, 2.92, "DNA", fs=10, w="bold", c=TEXT2, ha="left")
-    gx = [x0 + 0.75 + k * 1.15 for k in range(3)]
-    ax.plot([x0 + 0.55, x0 + CW], [2.92, 2.92], color="#C4C8CF", lw=2, zorder=1)
-    for (g, gc), xg in zip(genes, gx):
-        box(ax, xg, 2.8, 0.85, 0.24, fc=gc, ec="none", r=0.04)
+    label(ax, x0, 3.55, "DNA", fs=11, w="bold", c=TEXT2, ha="left")
+    ax.plot([x0 + 0.5, x0 + CW], [3.55, 3.55], color="#C4C8CF", lw=2, zorder=1)
+    for (g, gc), gx in zip(genes, GX):
+        box(ax, x0 + gx, 3.43, GW, 0.24, fc=gc, ec="none", r=0.04)
     # RNA: how much of each gene is switched on
-    label(ax, x0, 1.95, "RNA", fs=10, w="bold", c=TEXT2, ha="left")
-    ax.plot([x0 + 0.55, x0 + CW], [1.25, 1.25], color="#C4C8CF", lw=1)
-    for (g, gc), xg, e in zip(genes, gx, expr):
+    label(ax, x0, 2.55, "RNA", fs=11, w="bold", c=TEXT2, ha="left")
+    ax.plot([x0 + 0.5, x0 + CW], [1.85, 1.85], color="#C4C8CF", lw=1)
+    for (g, gc), gx, e in zip(genes, GX, expr):
+        xc = x0 + gx + GW / 2
         if e > 0:
-            box(ax, xg + 0.17, 1.25, 0.5, 1.15 * e, fc=mix(gc, 0.75), ec="none", r=0.03)
+            box(ax, xc - 0.25, 1.85, 0.5, 1.15 * e, fc=mix(gc, 0.75), ec="none", r=0.03)
         else:
-            label(ax, xg + 0.42, 1.38, "꺼짐", fs=9, c=TEXT2)
-        label(ax, xg + 0.42, 0.95 if "\n" not in g else 0.86, g, fs=9, c=TEXT, linespacing=1.2)
+            label(ax, xc, 2.0, "꺼짐", fs=11, c=TEXT2)
+        label(ax, xc, 1.6, g, fs=11, c=TEXT)
 
 # what is the same and what differs, between the two columns
-ax.plot([4.95, 4.95], [0.75, 3.3], color=LINE, lw=1, zorder=0)
-for t_, y in [("같음", 2.92), ("다름", 1.85)]:
-    box(ax, 4.95 - 0.3, y - 0.17, 0.6, 0.34, fc="white", ec=LINE, r=0.17, z=6)
-    label(ax, 4.95, y, t_, fs=10.5, w="bold", c=TEXT, z=7)
-box(ax, 0.35, 0.05, 9.35, 0.44, fc=FAINT, ec="none", r=0.08)
-label(ax, 0.55, 0.27, "진료에서", fs=10, w="bold", c=TEXT, ha="left")
-label(ax, 1.5, 0.27, "유전 질환 검사 → 혈액이나 침의 DNA로 가능", fs=9.8, c=TEXT, ha="left")
-label(ax, 5.5, 0.27, "발현 검사 → 병이 있는 조직을, 적절한 시점에", fs=9.8, c=TEXT, ha="left")
+xm = (CW + 4.55) / 2
+ax.plot([xm, xm], [1.4, 3.95], color=LINE, lw=1, zorder=0)
+for t_, y in [("같음", 3.55), ("다름", 2.5)]:
+    box(ax, xm - 0.32, y - 0.18, 0.64, 0.36, fc="white", ec=LINE, r=0.18, z=6)
+    label(ax, xm, y, t_, fs=11, w="bold", c=TEXT, z=7)
+label(ax, 4.55 + GX[2] + GW / 2, 1.3, "(예: 알부민)", fs=11, c=TEXT2)
+
+# what this means for testing
+box(ax, 0.0, 0.0, 8.4, 0.95, fc=FAINT, ec="none", r=0.08)
+label(ax, 0.2, 0.475, "진료에서", fs=12, w="bold", c=TEXT, ha="left")
+label(ax, 1.35, 0.66, "유전 질환 검사 → 혈액이나 침의 DNA로 가능", fs=11, c=TEXT, ha="left")
+label(ax, 1.35, 0.29, "발현 검사 → 병이 있는 조직을, 적절한 시점에", fs=11, c=TEXT, ha="left")
 save(fig, "../../assets/img/w01/same_genome.png")
