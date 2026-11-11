@@ -10,7 +10,7 @@ sites = {"장": [0.42, 0.45, 0.04, 0.04, 0.005, 0.045],
          "피부": [0.05, 0.25, 0.15, 0.50, 0.005, 0.045],
          "질": [0.02, 0.90, 0.02, 0.04, 0.0, 0.02]}
 
-fig, (a, b) = plt.subplots(1, 2, figsize=(10.4, 4.3), gridspec_kw={"wspace": 0.12, "width_ratios": [0.8, 1.2]})
+fig, (a, b) = plt.subplots(1, 2, figsize=(8.0, 4.7), gridspec_kw={"wspace": 0.1, "width_ratios": [0.9, 1.1]})
 
 
 def stack(ax, X, V, w, show_pct):
@@ -20,7 +20,7 @@ def stack(ax, X, V, w, show_pct):
         if show_pct:
             for x, v, y0 in zip(X, V[:, k], bottom):
                 if v >= 0.12:
-                    ax.text(x, y0 + v / 2, f"{v:.0%}", ha="center", va="center", fontsize=9,
+                    ax.text(x, y0 + v / 2, f"{v:.0%}", ha="center", va="center", fontsize=11,
                             color="white" if k < 4 else TEXT)
         bottom += V[:, k]
 
@@ -29,18 +29,18 @@ def style(ax, tag):
     for sp in ("left", "top", "right"):
         ax.spines[sp].set_visible(False)
     ax.spines["bottom"].set_color(LINE)
-    ax.tick_params(length=0, labelsize=10)
+    ax.tick_params(length=0, labelsize=11)
     ax.set_ylim(0, 1.0)
-    ax.text(0, 1.06, tag, transform=ax.transAxes, fontsize=11.5, fontweight="bold", color=TEXT, va="bottom")
+    ax.text(0, 1.06, tag, transform=ax.transAxes, fontsize=12.5, fontweight="bold", color=TEXT, va="bottom")
 
 
 V = np.array(list(sites.values()))
-stack(a, np.arange(4), V, 0.64, True)
+stack(a, np.arange(4), V, 0.7, True)
 a.set_xticks(range(4))
-a.set_xticklabels(sites.keys(), fontsize=11.5, fontweight="bold", color=TEXT)
+a.set_xticklabels(sites.keys(), fontsize=12.5, fontweight="bold", color=TEXT)
 a.set_yticks([0, 0.5, 1])
 a.set_yticklabels(["0", "50%", "100%"], color=TEXT2)
-style(a, "① 부위마다 다른 생태계")
+style(a, "① 부위마다 다름")
 
 n = 14
 base = np.log(np.array(sites["장"]) + 0.005)
@@ -50,10 +50,10 @@ G = G[np.argsort(-G[:, 0])]
 stack(b, np.arange(n), G, 0.8, False)
 b.set_xticks([])
 b.set_yticks([])
-b.set_xlabel("건강한 성인 14명의 대변", fontsize=10.5, color=TEXT2, labelpad=8)
-style(b, "② 같은 장, 사람마다 다른 공동체")
+b.set_xlabel("건강한 성인 14명의 대변", fontsize=11.5, color=TEXT2, labelpad=8)
+style(b, "② 같은 장도 사람마다 다름")
 
 handles = [mp.Patch(fc=c, ec="none", label=nm) for nm, c in phyla]
-fig.legend(handles=handles, loc="lower center", ncol=6, frameon=False, fontsize=10, bbox_to_anchor=(0.5, -0.07),
-           handlelength=1.0, columnspacing=1.4)
+fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False, fontsize=11, bbox_to_anchor=(0.5, -0.12),
+           handlelength=1.0, columnspacing=1.6)
 save(fig, "../../assets/img/w13/taxonomic_composition.png")
